@@ -1,32 +1,41 @@
-const mongoose = require("mongoose");
 require("dotenv").config();
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
-const faculties = ["Applied", "Business Studies", "Technological Studies"];
+const Faculty = require("./models/Faculty");
+const Admin = require("./models/admin");
 
-faculties.forEach(async (faculty) => {
-  const db = await mongoose.createConnection(
-    `${process.env.MONGO_URI}faculty_${faculty}`,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  );
+async function main() {
+  await mongoose.connect(process.env.MONGO_URI);
 
-  const Student = db.model("Student", new mongoose.Schema({
-    regNumber: String,
-    fullName: String,
-    indexNumber: String,
-    username: String,
-    password: String,
-    academicYear: String,
-  }));
+  // faculties seed
+  const faculties = [
+    { name: "Faculty of Applied Science", departments: ["Department of Physical", "Department of Biological"] },
+    { name: "Faculty of Business Studies", departments: ["Department of Management", "Department of Finance"] },
+    { name: "Faculty of Technological Studies", departments: ["Department of Engineering", "Department of IT"] }
+  ];
 
-  const student = new Student({
-    regNumber: "2021/ICT/001",
-    fullName: "John Doe",
-    indexNumber: "IT17101",
-    username: "2021/ICT/001",
-    password: "Test@1234",
-    academicYear: "2021/2022",
-  });
+  for (const f of faculties) {
+    await Faculty.updateOne({ name: f.name }, { $set: f }, { upsert: true });
+  }
 
-  await student.save();
-  console.log(`Student added to faculty_${faculty}`);
+  // admin seed (username: admin, password: admin123) — hashed
+  const existing = await Admin.findOne({ username: "admin" });
+  if (!existing) {
+    const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS || 10));
+    const hash = await bcrypt.hash("admin123", salt);
+    const admin = new Admin({ username: "admin", password: hash, name: "System Administrator" });
+    await admin.save();
+    console.log("Created admin account (admin / admin123)");
+  } else {
+    console.log("Admin already exists");
+  }
+
+  console.log("Seed done");
+  process.exit(0);
+}
+
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
 });
