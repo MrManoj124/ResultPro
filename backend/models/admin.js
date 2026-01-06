@@ -8,3 +8,5 @@ const adminSchema = new mongoose.Schema({
 });
 
 module.exports = adminSchema;
+
+//
