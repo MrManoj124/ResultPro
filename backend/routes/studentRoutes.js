@@ -3,8 +3,6 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const Student = require("../models/studentSchema");
 
-const router = express.Router();
-
 // ------------------ REGISTER STUDENT ------------------ //
 router.post("/register", async (req, res) => {
   try {
