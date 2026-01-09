@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Course = require("../models/Course");
-const Student = require("../models/Student");
+const Student = require("../models/studentSchema");
 
 // GET /api/admin/students?faculty=&department=&level=
 router.get("/students", async (req, res) => {
