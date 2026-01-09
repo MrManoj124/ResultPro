@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const Staff = require("../models/Staff");
+const Staff = require("../models/staffSchema");
 
 // POST /api/staff  (signup)
 router.post("/", async (req, res) => {
