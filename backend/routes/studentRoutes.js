@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
-const Student = require("../models/Student");
+const Student = require("../models/studentSchema");
 const argon2 = require("argon2");
 const DEFAULT_PASSWORD = "student123"; // default password for new students
 
