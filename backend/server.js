@@ -9,7 +9,7 @@ const app = express();
 
 // ===== Import Route Files =====
 const authRoutes = require("./routes/auth");
-const studentsRoutes = require("./routes/students");
+const studentsRoutes = require("./routes/studentRoutes");
 const staffRoutes = require("./routes/staff");
 const adminRoutes = require("./routes/admin");
 const facultiesRoutes = require("./routes/faculties");
