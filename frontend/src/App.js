@@ -16,6 +16,8 @@ import AdminDashboard from "./components/AdminDashboard";
 import StaffDashboard from "./components/StaffDashboard";
 import StudentDetails from "./components/StudentDetails";
 import CourseDetails from './components/CourseDetails';
+import ResultDetails from './components/ResultDetails';
+import ForgotPassword  from "./components/ForgotPassword";
 
 import "./index.css";
 
