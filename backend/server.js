@@ -15,6 +15,8 @@ const adminRoutes = require("./routes/admin");
 const facultiesRoutes = require("./routes/faculties");
 const otpRoutes = require("./routes/otpRoutes");
 const courseRoutes = require("./routes/courses");
+const typeRoutes = require("./routes/type");
+const syllabusRoutes = require("./routes/syllabus");
 
 // ===== Middleware =====
 app.use(express.json());
@@ -36,6 +38,8 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/faculties", facultiesRoutes);
 app.use("/api/otp", otpRoutes);
 app.use("/api/courses", courseRoutes);
+app.use("/api/type", typeRoutes);
+app.use("/api/syllabus", syllabusRoutes);
 
 
 // ===== Default Test Route =====
