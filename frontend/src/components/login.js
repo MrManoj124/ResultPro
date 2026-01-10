@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import "../CSS/Login.css";
 
 function Login({ handleLogin }) {
@@ -7,7 +6,6 @@ function Login({ handleLogin }) {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const saved = localStorage.getItem("savedUsername");

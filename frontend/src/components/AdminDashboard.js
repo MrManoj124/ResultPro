@@ -9,8 +9,6 @@ function AdminDashboard({ username, handleLogout }) {
   const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedSemester, setSelectedSemester] = useState("");
   const [selectedCourse, setSelectedCourse] = useState("");
-  const [studentsList, setStudentsList] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [courseList, setCourseList] = useState([]);
   const navigate = useNavigate();
 
@@ -93,28 +91,6 @@ function AdminDashboard({ username, handleLogout }) {
 }, []);
 
 
-  // ===== Fetch students =====
-  useEffect(() => {
-    if (activeTab === "Students" && selectedDepartment) {
-      setLoading(true);
-      fetch(
-        `http://localhost:5000/api/admin/students?faculty=${encodeURIComponent(
-          selectedFaculty
-        )}&department=${encodeURIComponent(selectedDepartment)}`
-      )
-        .then((r) => r.json())
-        .then((data) => {
-          if (data.success) setStudentsList(data.students);
-          else setStudentsList([]);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Error fetching students:", err);
-          setLoading(false);
-        });
-    }
-  }, [activeTab, selectedFaculty, selectedDepartment]);
-
   // ===== Handlers =====
   const resetSelections = () => {
     setSelectedFaculty("");
@@ -122,20 +98,6 @@ function AdminDashboard({ username, handleLogout }) {
     setSelectedLevel("");
     setSelectedSemester("");
     setSelectedCourse("");
-    setStudentsList([]);
-  };
-
-  const handleCourseSelect = (courseCode) => {
-    setSelectedCourse(courseCode);
-    navigate("/courseDetails", {
-      state: {
-        faculty: selectedFaculty,
-        department: selectedDepartment,
-        level: selectedLevel,
-        semester: selectedSemester,
-        courseCode,
-      },
-    });
   };
 
   const handleResultCourseSelect = (courseCode) => {
