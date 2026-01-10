@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../CSS/StudentDashboard.css";
 
-function StudentDashboard({ username, handleLogout }) {
+function StudentDetails({ username, handleLogout }) {
   const [level, setLevel] = useState("Level 1");
   const [semester, setSemester] = useState("First Semester");
 
@@ -56,9 +56,9 @@ function StudentDashboard({ username, handleLogout }) {
           </button>
           <button
             className={level === "Level 4" ? "active" : ""}
-            onClick={() => setLevel("Level ")}
+            onClick={() => setLevel("Level 4")}
           >
-            Level 1
+            Level 4
           </button>
         </div>
 
@@ -114,4 +114,4 @@ function StudentDashboard({ username, handleLogout }) {
   );
 }
 
-export default StudentDashboard;
+export default StudentDetails;
