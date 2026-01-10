@@ -29,7 +29,7 @@ function ForgotPassword() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/send-otp", {
+      await axios.post("http://localhost:5000/api/auth/send-otp", {
   regNo: form.regNo,
   role: form.role,
   faculty: form.faculty,
@@ -46,7 +46,7 @@ function ForgotPassword() {
 
   const handleVerifyOtp = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/verify-otp", {
+      await axios.post("http://localhost:5000/api/auth/verify-otp", {
         email: form.email,
         otp,
         newPassword: form.newPassword,
