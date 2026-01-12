@@ -20,6 +20,7 @@ const SyllabusManagement = () => {
     studentIds: [],
   });
 
+  
   const [markEntryForm, setMarkEntryForm] = useState({
     syllabusId: "",
     marks: "",
