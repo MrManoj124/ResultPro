@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../CSS/AdminDashboard.css";
+import TypeManagement from "./TypeManagement";
+import SyllabusManagement from "./SyllabusManagement";
 
 function AdminDashboard({ username, handleLogout }) {
   const [activeTab, setActiveTab] = useState("Overview");
@@ -154,7 +156,7 @@ function AdminDashboard({ username, handleLogout }) {
 
         {/* ===== Tabs ===== */}
         <div className="dashboard-tabs">
-          {["Overview", "Students", "Courses", "Results"].map((tab) => (
+          {["Overview", "Students", "Courses", "Results", "Type Courses", "Syllabus"].map((tab) => (
             <button
               key={tab}
               className={activeTab === tab ? "active" : ""}
@@ -465,6 +467,15 @@ function AdminDashboard({ username, handleLogout }) {
           </div>
         )}
 
+        {/* ===== Type Courses Tab ===== */}
+        {activeTab === "Type Courses" && (
+          <TypeManagement />
+        )}
+
+        {/* ===== Syllabus Tab ===== */}
+        {activeTab === "Syllabus" && (
+          <SyllabusManagement />
+        )}
 
       </div>
     </div>
