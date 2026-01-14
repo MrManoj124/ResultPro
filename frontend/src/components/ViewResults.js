@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "../CSS/ViewResults.css";
 
 function ViewResults({ onBack, user }) {
@@ -13,16 +14,11 @@ function ViewResults({ onBack, user }) {
     setLoading(true);
     setError("");
     try {
-      // Fetch syllabus records where this staff member is assigned
-      // Note: This fetches existing assignments. "Upload" usually implies bulk creation -> which creates Syllabus records?
-      // "UploadGrades" likely creates/updates Syllabus records.
-      // So fetching Syllabus records IS the correct way to view results.
-      const res = await fetch(`http://localhost:5000/api/syllabus?staffId=${user._id}`);
-      if (!res.ok) throw new Error("Failed to fetch results");
-      const data = await res.json();
+      // Fetch syllabus records using AXIOS to support auth headers
+      const res = await axios.get(`http://localhost:5000/api/syllabus?staffId=${user._id}`);
 
-      if (data.success) {
-        setResults(data.data);
+      if (res.data && res.data.success) {
+        setResults(res.data.data);
       } else {
         setResults([]);
       }
@@ -55,11 +51,11 @@ function ViewResults({ onBack, user }) {
         <table className="results-table">
           <thead>
             <tr>
-              <th>Index Number</th>
-              <th>Subject</th>
+              <th>Student</th>
+              <th>Course</th>
               <th>Grade</th>
-              <th>Uploaded By</th>
-              <th>Uploaded At</th>
+              <th>Staff</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>

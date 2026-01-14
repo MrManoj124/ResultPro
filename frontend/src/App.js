@@ -34,6 +34,14 @@ function App() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(null);
 
+  // Initialize token from localStorage on mount
+  useState(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, []);
+
   // ===== LOGIN FUNCTION =====
   const handleLogin = async (username, password) => {
     try {
@@ -43,9 +51,14 @@ function App() {
       });
 
       if (res.data && res.data.user) {
-        const { user } = res.data;
-        // Optionally store token in localStorage if needed for persistence
-        // localStorage.setItem('token', token); 
+        const { user, token } = res.data;
+
+        // Store token in localStorage
+        localStorage.setItem('token', token);
+
+        // Set default header for future requests
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
         setCurrentUser(user);
 
         // Navigate based on role
@@ -62,6 +75,8 @@ function App() {
 
   // ===== LOGOUT FUNCTION =====
   const handleLogout = () => {
+    localStorage.removeItem('token');
+    delete axios.defaults.headers.common['Authorization'];
     setCurrentUser(null);
     navigate("/login");
   };

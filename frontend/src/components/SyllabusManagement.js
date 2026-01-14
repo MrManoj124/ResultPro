@@ -52,6 +52,7 @@ const SyllabusManagement = () => {
     try {
       const queryParams = new URLSearchParams(filterParams).toString();
       const url = `${API_URL}/api/syllabus${queryParams ? `?${queryParams}` : ""}`;
+      // axios defaults are set in App.js with the token, so no manual header needed here if token is present
       const response = await axios.get(url);
       setSyllabuses(response.data.data || []);
     } catch (err) {
