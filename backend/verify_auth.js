@@ -56,6 +56,30 @@ async function testAuth() {
         // So currently, an Admin cannot login via `/api/auth/login`.
 
         console.log("Login Verification Pause: Admin login logic is missing in auth.js!");
+        if (res.ok) {
+            const data = await res.json();
+            token = data.token;
+            console.log("✅ Admin Login successful. Token received.");
+
+            // 3. Access Protected Route WITH Token
+            try {
+                const protectedRes = await fetch(`${BASE_URL}/syllabus`, {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+                if (protectedRes.ok) {
+                    console.log("✅ Protected Route check passed (With Token -> 200 OK)");
+                } else {
+                    console.error(`❌ Protected Route check FAILED with Token (Status: ${protectedRes.status})`);
+                    console.log(await protectedRes.text());
+                }
+            } catch (pErr) {
+                console.error("Error accessing protected route with token:", pErr);
+            }
+
+        } else {
+            console.error(`❌ Admin Login FAILED (Status: ${res.status})`);
+            console.log(await res.text());
+        }
     } catch (err) {
         console.error("Login test error:", err);
     }
