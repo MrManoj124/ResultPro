@@ -66,73 +66,88 @@ router.get("/:id", async (req, res) => {
 });
 
 // ===== CREATE new Syllabus record =====
+// ... (existing code)
+
+// ===== CREATE new Syllabus record =====
 router.post(
   "/",
+  isAdmin, // Only admin can create
   [
     body("typeId", "Type ID is required").notEmpty(),
-    body("staffId", "Staff ID is required").notEmpty(),
-    body("studentId", "Student ID is required").notEmpty(),
-    body("courseId", "Course ID is required").notEmpty(),
+    // ...
+    router.put(
+      "/:id",
+      isAdmin, // Only admin can update
+      [
+        body("marks").optional().isNumeric().custom((value) => {
+          // ...
+          router.delete("/:id", isAdmin, async (req, res) => {
+            // ...
+            router.post("/bulk-assign", isAdmin, async (req, res) => {
+
+              body("staffId", "Staff ID is required").notEmpty(),
+                body("studentId", "Student ID is required").notEmpty(),
+                body("courseId", "Course ID is required").notEmpty(),
   ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        message: "Validation errors",
-        errors: errors.array(),
-      });
-    }
+      async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res.status(400).json({
+            success: false,
+            message: "Validation errors",
+            errors: errors.array(),
+          });
+        }
 
-    try {
-      const { typeId, staffId, studentId, courseId, attendance } = req.body;
+        try {
+          const { typeId, staffId, studentId, courseId, attendance } = req.body;
 
-      // Check if combination already exists
-      const existingSyllabus = await Syllabus.findOne({
-        typeId,
-        staffId,
-        studentId,
-        courseId,
-      });
+          // Check if combination already exists
+          const existingSyllabus = await Syllabus.findOne({
+            typeId,
+            staffId,
+            studentId,
+            courseId,
+          });
 
-      if (existingSyllabus) {
-        return res.status(400).json({
-          success: false,
-          message: "This student-course-staff combination already exists",
-        });
+          if (existingSyllabus) {
+            return res.status(400).json({
+              success: false,
+              message: "This student-course-staff combination already exists",
+            });
+          }
+
+          const newSyllabus = new Syllabus({
+            typeId,
+            staffId,
+            studentId,
+            courseId,
+            attendance: attendance || 0,
+            status: "Active",
+          });
+
+          await newSyllabus.save();
+          await newSyllabus.populate([
+            { path: "typeId", select: "courseName courseCode semester level" },
+            { path: "staffId", select: "name email department" },
+            { path: "studentId", select: "name username faculty" },
+            { path: "courseId", select: "courseName courseCode credits" },
+          ]);
+
+          res.status(201).json({
+            success: true,
+            message: "Syllabus record created successfully",
+            data: newSyllabus,
+          });
+        } catch (err) {
+          res.status(500).json({
+            success: false,
+            message: "Error creating Syllabus record",
+            error: err.message,
+          });
+        }
       }
-
-      const newSyllabus = new Syllabus({
-        typeId,
-        staffId,
-        studentId,
-        courseId,
-        attendance: attendance || 0,
-        status: "Active",
-      });
-
-      await newSyllabus.save();
-      await newSyllabus.populate([
-        { path: "typeId", select: "courseName courseCode semester level" },
-        { path: "staffId", select: "name email department" },
-        { path: "studentId", select: "name username faculty" },
-        { path: "courseId", select: "courseName courseCode credits" },
-      ]);
-
-      res.status(201).json({
-        success: true,
-        message: "Syllabus record created successfully",
-        data: newSyllabus,
-      });
-    } catch (err) {
-      res.status(500).json({
-        success: false,
-        message: "Error creating Syllabus record",
-        error: err.message,
-      });
-    }
-  }
-);
+    );
 
 // ===== UPDATE Syllabus record (marks, grades, attendance) =====
 router.put(
