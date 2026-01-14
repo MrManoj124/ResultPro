@@ -11,7 +11,7 @@ mongoose
         useUnifiedTopology: true,
     })
     .then(async () => {
-        console.log("✅ Connected to MongoDB");
+        console.log("Connected to MongoDB");
 
         try {
             const existing = await Admin.findOne({ username: "admin" });
@@ -29,15 +29,15 @@ mongoose
                 });
 
                 await newAdmin.save();
-                console.log("✅ Admin user 'admin' created with password 'admin123'.");
+                console.log("Admin user 'admin' created with password 'admin123'.");
             }
             process.exit(0);
         } catch (error) {
-            console.error("❌ Error seeding admin:", error);
+            console.error("Error seeding admin:", error);
             process.exit(1);
         }
     })
     .catch((err) => {
-        console.error("❌ MongoDB connection failed:", err.message);
+        console.error("MongoDB connection failed:", err.message);
         process.exit(1);
     });
