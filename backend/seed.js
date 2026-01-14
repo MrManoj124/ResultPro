@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const Faculty = require("./models/Faculty");
-const Admin = require("./models/Admin");
+const Admin = require("./models/admin");
 
 async function main() {
   await mongoose.connect(process.env.MONGO_URI);
