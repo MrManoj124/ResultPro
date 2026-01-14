@@ -7,6 +7,6 @@ const adminSchema = new mongoose.Schema({
   faculty: String,
 });
 
-module.exports = adminSchema;
+module.exports = mongoose.models.Admin || mongoose.model("Admin", adminSchema);
 
 //
