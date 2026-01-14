@@ -27,7 +27,7 @@ async function testAuth() {
         const res = await fetch(`${BASE_URL}/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username: "admin", password: "admin123", faculty: "Business" }) // faculty might be required by login logic?
+            body: JSON.stringify({ username: "admin", password: "admin123" })
         });
 
         // Login logic in auth.js: checks `if (!faculty || !faculties[faculty])`.
@@ -62,4 +62,4 @@ async function testAuth() {
 }
 
 testAuth();
-console.log("Verification script placeholder");
+// End of verification
