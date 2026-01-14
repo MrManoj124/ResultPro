@@ -1,4 +1,4 @@
-/*const fetch = require("node-fetch"); // Use dynamic import if node-fetch is ESM, but assuming CommonJS for now. If error, will switch to axios or http.
+const fetch = require("node-fetch"); // Use dynamic import if node-fetch is ESM, but assuming CommonJS for now. If error, will switch to axios or http.
 // Actually, node environment might not have fetch by default depending on version.
 // Using reliable 'http' or creating a simple test script.
 // Assuming Node 18+ has native fetch.
