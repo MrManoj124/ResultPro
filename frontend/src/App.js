@@ -1,5 +1,5 @@
 // ===== App.js =====
-/*import React, { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import {
   BrowserRouter as Router,
@@ -70,15 +70,15 @@ function App() {
   return (
     <Routes>
       {/* FRONT PAGE */}
-<Route path="/" element={<FrontPage />} />
+      <Route path="/" element={<FrontPage />} />
 
-{/* LOGIN PAGE */ }
-<Route
-  path="/login"
-  element={<Login handleLogin={handleLogin} />}
-/>
+      {/* LOGIN PAGE */}
+      <Route
+        path="/login"
+        element={<Login handleLogin={handleLogin} />}
+      />
 
-{/* ===== DASHBOARDS ===== */ }
+      {/* ===== DASHBOARDS ===== */}
       <Route
         path="/student"
         element={
