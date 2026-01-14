@@ -76,9 +76,17 @@ mongoose
     console.log("✅ Connected to MongoDB");
 
     try {
-      // Delete existing faculties
-      await Faculty.deleteMany({});
-      console.log("🗑️  Cleared existing faculties");
+      // Drop the collection completely to remove old indexes
+      try {
+        await Faculty.collection.drop();
+        console.log("🗑️  Dropped existing faculties collection");
+      } catch (err) {
+        if (err.code === 26) {
+          console.log("ℹ️  No existing collection to drop");
+        } else {
+          throw err;
+        }
+      }
 
       // Insert new faculties
       const inserted = await Faculty.insertMany(seedData);
