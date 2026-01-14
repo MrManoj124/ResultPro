@@ -1,4 +1,3 @@
-// models/studentSchema.js
 const mongoose = require("mongoose");
 
 const studentSchema = new mongoose.Schema(
@@ -17,12 +16,16 @@ const studentSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    academicYear: {
+      type: String,
+      trim: true,
+    },
     nic: {
       type: String,
       trim: true,
     },
     enrollmentDate: {
-      type: String,
+      type: String, // Could be Date, but keeping String for compatibility with existing code
       trim: true,
     },
     username: {
@@ -38,7 +41,7 @@ const studentSchema = new mongoose.Schema(
     faculty: {
       type: String,
       required: true,
-      enum: ["Applied", "Business Studies", "Technology Studies"],
+      // enum: ["Applied", "Business Studies", "Technology Studies"], // Removed enum to avoid validation errors with "Applied Science" vs "Applied" mismatch
     },
     department: {
       type: String,
@@ -53,10 +56,15 @@ const studentSchema = new mongoose.Schema(
       type: String,
       default: "student",
     },
+    mobile: String,
+    address: String,
+    gender: String,
+    birthdate: String,
+    level: String,
   },
-  { timestamps: true } // optional: adds createdAt & updatedAt
+  { timestamps: true }
 );
 
-const Student = mongoose.model("Student", studentSchema);
+const Student = mongoose.models.Student || mongoose.model("Student", studentSchema);
 
 module.exports = Student;

@@ -4,32 +4,16 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// Example: faculty databases
-const faculties = {
-  Applied: mongoose.connection.useDb("faculty_Applied"),
-  BusinessStudies: mongoose.connection.useDb("faculty_BusinessStudies"),
-  TechnologicalStudies: mongoose.connection.useDb("faculty_TechnologicalStudies"),
-};
-
-// Student Schema (shared across faculties)
-const studentSchema = new mongoose.Schema({
-  regNumber: String,
-  fullName: String,
-  enrollDate: String,
-  indexNumber: String,
-  academicYear: String,
-  faculty: String,
-  username: String,
-  password: String,
-  role: { type: String, default: "student" },
-});
+// Models
+const Student = require("../models/studentSchema");
+const Admin = require("../models/admin");
 
 router.post("/signup", async (req, res) => {
   try {
     const {
       regNumber,
-      fullName,
-      enrollDate,
+      fullName, // Mapping to 'name'
+      enrollDate, // Mapping to 'enrollmentDate'
       indexNumber,
       academicYear,
       faculty,
@@ -37,10 +21,7 @@ router.post("/signup", async (req, res) => {
       password,
     } = req.body;
 
-    if (!faculty || !faculties[faculty]) return res.status(400).json({ message: "Invalid faculty" });
-
-    const Student = faculties[faculty].model("Student", studentSchema);
-
+    // Check existing
     const existingUser = await Student.findOne({ username });
     if (existingUser) return res.status(400).json({ message: "Username already exists" });
 
@@ -48,8 +29,8 @@ router.post("/signup", async (req, res) => {
 
     const newStudent = new Student({
       regNumber,
-      fullName,
-      enrollDate,
+      name: fullName,
+      enrollmentDate: enrollDate,
       indexNumber,
       academicYear,
       faculty,
@@ -65,10 +46,6 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-const Admin = require("../models/admin");
-
-// ... (existing code)
-
 router.post("/login", async (req, res) => {
   try {
     const { username, password, faculty } = req.body;
@@ -76,25 +53,31 @@ router.post("/login", async (req, res) => {
     let user;
     let role;
 
-    // 1. Admin Login (if no faculty provided or explicit admin check)
-    if (!faculty) {
+    // 1. Admin Login (Check admin collection first if 'faculty' is missing or username is 'admin')
+    if (!faculty || username === "admin") {
       user = await Admin.findOne({ username });
-      if (!user) return res.status(400).json({ message: "User not found" });
-      role = "admin";
-    } else {
-      // 2. Student/Faculty Login
-      if (!faculties[faculty]) return res.status(400).json({ message: "Invalid faculty" });
-      const Student = faculties[faculty].model("Student", studentSchema);
-      user = await Student.findOne({ username });
-      if (!user) return res.status(400).json({ message: "User not found" });
-      role = user.role || "student";
+      if (user) {
+        role = "admin";
+      }
     }
+
+    // 2. Student Login (Check student collection if not found as admin)
+    if (!user) {
+      user = await Student.findOne({ username });
+      if (user) {
+        role = user.role || "student";
+        // Optional: Check if faculty matches?
+        // if (faculty && user.faculty !== faculty) ...
+      }
+    }
+
+    if (!user) return res.status(400).json({ message: "User not found" });
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ message: "Invalid password" });
 
     const token = jwt.sign(
-      { id: user._id, username: user.username, role: role, faculty: faculty || "Global" },
+      { id: user._id, username: user.username, role: role, faculty: user.faculty || "Global" },
       process.env.JWT_SECRET || "fallback_secret_key_DO_NOT_USE_IN_PROD",
       { expiresIn: "1h" }
     );
@@ -109,7 +92,6 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message, stack: err.stack });
   }
 });
-
 
 module.exports = router;
 
