@@ -61,5 +61,5 @@ async function testAuth() {
     }
 }
 
-// testAuth();
+testAuth();
 console.log("Verification script placeholder");
