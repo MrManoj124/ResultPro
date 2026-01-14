@@ -52,19 +52,23 @@ function StudentDashboard({ user, handleLogout }) {
     const rSemester = r.semester || "";
 
     // Simple loose matching for now
+    // eslint-disable-next-line no-unused-vars
     const levelMatch = rLevel.includes(level) || (level === "Level 1" && rLevel.includes("1"));
     // This is a bit hacky, but safe for now given "Level 1" vs "Level 1" exact match potential issues if data differs.
     // Actually the mock data had "Level 1", backend has "Level 1". match should be fine.
 
     // Normalize semester
     const selectedSem = semester.split(" ")[0]; // "First" from "First Semester"
+    // eslint-disable-next-line no-unused-vars
     const semMatch = rSemester.includes(selectedSem);
 
-    return rLevel === level && rSemester === selectedSem;
+    // Use the robust matching
+    return levelMatch && semMatch;
   });
 
   const totalCredits = filteredResults.reduce((sum, r) => sum + (r.credits || 0), 0);
-  const totalGpaPoints = filteredResults.reduce((sum, r) => sum + (r.gpa * r.credits), 0); // Weighted GPA usually? 
+  // eslint-disable-next-line no-unused-vars
+  // const totalGpaPoints = filteredResults.reduce((sum, r) => sum + (r.gpa * r.credits), 0); 
   // Original mock just averaged GPA. Let's stick to simple average if credits are missing, or weighted if present.
   // Original: (sum GPA / count). Let's keep it simple.
   const avgGpa = filteredResults.length ? (filteredResults.reduce((sum, r) => sum + (r.gpa || 0), 0) / filteredResults.length).toFixed(2) : "0.00";

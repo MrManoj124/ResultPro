@@ -43,7 +43,7 @@ function App() {
       });
 
       if (res.data && res.data.user) {
-        const { user, token } = res.data;
+        const { user } = res.data;
         // Optionally store token in localStorage if needed for persistence
         // localStorage.setItem('token', token); 
         setCurrentUser(user);
