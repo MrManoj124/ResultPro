@@ -1,5 +1,6 @@
 // ===== App.js =====
-import React, { useState } from "react";
+/*import React, { useState } from "react";
+import axios from "axios";
 import {
   BrowserRouter as Router,
   Routes,
@@ -17,7 +18,7 @@ import StaffDashboard from "./components/StaffDashboard";
 import StudentDetails from "./components/StudentDetails";
 import CourseDetails from './components/CourseDetails';
 import ResultDetails from './components/ResultDetails';
-import ForgotPassword  from "./components/ForgotPassword";
+import ForgotPassword from "./components/ForgotPassword";
 
 import "./index.css";
 
@@ -34,32 +35,29 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
 
   // ===== LOGIN FUNCTION =====
-  const handleLogin = (username, password) => {
-    const uname = username.toLowerCase();
+  const handleLogin = async (username, password) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
+        username,
+        password,
+      });
 
-    // ROLE BASED LOGIN (NO PASSWORD VALIDATION)
-    if (uname.startsWith("admin")) {
-      const user = { username, role: "admin" };
-      setCurrentUser(user);
-      navigate("/admin");
-      return;
+      if (res.data && res.data.user) {
+        const { user, token } = res.data;
+        // Optionally store token in localStorage if needed for persistence
+        // localStorage.setItem('token', token); 
+        setCurrentUser(user);
+
+        // Navigate based on role
+        if (user.role === "admin") navigate("/admin");
+        else if (user.role === "student") navigate("/student");
+        else if (user.role === "staff") navigate("/staff");
+        else alert("Unknown role: " + user.role);
+      }
+    } catch (err) {
+      console.error("Login Failed:", err);
+      alert(err.response?.data?.message || "Login failed");
     }
-
-    if (uname.startsWith("student")) {
-      const user = { username, role: "student" };
-      setCurrentUser(user);
-      navigate("/student");
-      return;
-    }
-
-    if (uname.startsWith("staff")) {
-      const user = { username, role: "staff" };
-      setCurrentUser(user);
-      navigate("/staff");
-      return;
-    }
-
-    alert("Invalid username. Must start with admin / student / staff");
   };
 
   // ===== LOGOUT FUNCTION =====
@@ -72,21 +70,21 @@ function App() {
   return (
     <Routes>
       {/* FRONT PAGE */}
-      <Route path="/" element={<FrontPage />} />
+<Route path="/" element={<FrontPage />} />
 
-      {/* LOGIN PAGE */}
-      <Route
-        path="/login"
-        element={<Login handleLogin={handleLogin} />}
-      />
+{/* LOGIN PAGE */ }
+<Route
+  path="/login"
+  element={<Login handleLogin={handleLogin} />}
+/>
 
-      {/* ===== DASHBOARDS ===== */}
+{/* ===== DASHBOARDS ===== */ }
       <Route
         path="/student"
         element={
           currentUser && currentUser.role === "student" ? (
             <StudentDashboard
-              username={currentUser.username}
+              user={currentUser}
               handleLogout={handleLogout}
             />
           ) : (
@@ -100,7 +98,7 @@ function App() {
         element={
           currentUser && currentUser.role === "staff" ? (
             <StaffDashboard
-              username={currentUser.username}
+              user={currentUser}
               handleLogout={handleLogout}
             />
           ) : (
@@ -114,7 +112,7 @@ function App() {
         element={
           currentUser && currentUser.role === "admin" ? (
             <AdminDashboard
-              username={currentUser.username}
+              user={currentUser}
               handleLogout={handleLogout}
             />
           ) : (
@@ -124,7 +122,7 @@ function App() {
       />
 
       <Route path="/studentDetails" element={<StudentDetails />} />
-      
+
       <Route
         path="/resultDetails"
         element={
@@ -136,9 +134,9 @@ function App() {
         }
       />
 
-      <Route path="/courseDetails" element={<CourseDetails/>}/>
+      <Route path="/courseDetails" element={<CourseDetails />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-    </Routes>
+    </Routes >
   );
 }
 

@@ -1,19 +1,30 @@
-import React, { useEffect, useState } from "react";
+/*import React, { useEffect, useState } from "react";
 import "../CSS/ViewResults.css";
 
-function ViewResults({ onBack }) {
+function ViewResults({ onBack, user }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fetchResults = async () => {
+    if (!user || !user._id) return;
+
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("http://localhost:5000/api/results");
+      // Fetch syllabus records where this staff member is assigned
+      // Note: This fetches existing assignments. "Upload" usually implies bulk creation -> which creates Syllabus records?
+      // "UploadGrades" likely creates/updates Syllabus records.
+      // So fetching Syllabus records IS the correct way to view results.
+      const res = await fetch(`http://localhost:5000/api/syllabus?staffId=${user._id}`);
       if (!res.ok) throw new Error("Failed to fetch results");
       const data = await res.json();
-      setResults(data);
+
+      if (data.success) {
+        setResults(data.data);
+      } else {
+        setResults([]);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -23,7 +34,7 @@ function ViewResults({ onBack }) {
 
   useEffect(() => {
     fetchResults();
-  }, []);
+  }, [user]);
 
   return (
     <div className="view-results-container">
@@ -53,11 +64,11 @@ function ViewResults({ onBack }) {
           <tbody>
             {results.map((r, i) => (
               <tr key={i}>
-                <td>{r.indexNumber}</td>
-                <td>{r.subject}</td>
-                <td>{r.grade}</td>
-                <td>{r.uploadedBy}</td>
-                <td>{new Date(r.uploadedAt).toLocaleString()}</td>
+                <td>{r.studentId?.username || r.studentId?.name || "N/A"}</td>
+                <td>{r.courseId?.courseName || r.typeId?.courseName || "N/A"}</td>
+                <td>{r.grade || "-"}</td>
+                <td>{r.staffId?.name || user.username}</td>
+                <td>{new Date(r.updatedAt).toLocaleDateString()}</td>
               </tr>
             ))}
           </tbody>
