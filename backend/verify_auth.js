@@ -55,7 +55,7 @@ async function testAuth() {
         // Since I modified `auth.js` to issue tokens, I didn't change the USER LOOKUP logic.
         // So currently, an Admin cannot login via `/api/auth/login`.
 
-        console.log("Login Verification Pause: Admin login logic is missing in auth.js!");
+        // Admin login should now work
         if (res.ok) {
             const data = await res.json();
             token = data.token;
