@@ -6,6 +6,7 @@ function ViewResults({ onBack, user }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+
   const fetchResults = async () => {
     if (!user || !user._id) return;
 
