@@ -1,4 +1,4 @@
-/*const fetch = require("node-fetch-commonjs"); // Fallback for older node, or just use native if available. 
+const fetch = require("node-fetch-commonjs"); // Fallback for older node, or just use native if available. 
 // Actually, let's stick to native fetch as seen in verify_auth.js or use standard require if needed.
 // verify_auth.js used native fetch.
 
