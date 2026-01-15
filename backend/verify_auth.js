@@ -6,6 +6,7 @@
 async function testAuth() {
     const BASE_URL = "http://localhost:5000/api";
 
+
     console.log("Starting verification...");
 
     // 1. Try to access syllabus without token
