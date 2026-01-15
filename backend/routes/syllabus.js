@@ -11,13 +11,41 @@ router.use(verifyToken);
 // ===== GET all Syllabus records =====
 router.get("/", async (req, res) => {
   try {
-    const { studentId, staffId, typeId, status } = req.query;
+    const { studentId, staffId, typeId, status, faculty, department, semester, level } = req.query;
 
     let filter = {};
     if (studentId) filter.studentId = studentId;
     if (staffId) filter.staffId = staffId;
     if (typeId) filter.typeId = typeId;
     if (status) filter.status = status;
+
+    // Filter by Type properties if provided
+    if (faculty || department || semester || level) {
+      const typeFilter = {};
+      if (faculty) typeFilter.faculty = faculty;
+      if (department) typeFilter.department = { $regex: department, $options: "i" }; // Case-insensitive partial match
+      if (semester) typeFilter.semester = semester;
+      if (level) typeFilter.level = level;
+
+      const matchingTypes = await Type.find(typeFilter).select("_id");
+      const matchingTypeIds = matchingTypes.map((t) => t._id);
+
+      // If we already have a typeId filter, we need to intersect it, or if it's new, just add it.
+      // But typically typeId is specific. If provided, likely we don't need these others, but let's be safe.
+      if (filter.typeId) {
+        // If specific typeId is requested AND these filters, checks if that specific type matches these filters
+        const isMatch = matchingTypeIds.some(id => id.toString() === filter.typeId.toString());
+        if (!isMatch) {
+          // Conflict: user asked for specific Type ID but it doesn't match the property filters. Return empty.
+          return res.json({ success: true, count: 0, data: [] });
+        }
+      } else {
+        if (matchingTypeIds.length === 0) {
+          return res.json({ success: true, count: 0, data: [] });
+        }
+        filter.typeId = { $in: matchingTypeIds };
+      }
+    }
 
     const syllabus = await Syllabus.find(filter)
       .populate("typeId", "courseName courseCode semester level faculty department")

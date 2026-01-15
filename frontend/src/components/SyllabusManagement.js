@@ -137,7 +137,7 @@ const SyllabusManagement = () => {
     // Find corresponding Course ID using courseCode
     const matchingCourse = courses.find(c => c.courseCode === selectedType.courseCode);
     if (!matchingCourse) {
-      setError(`No Course found matching code ${selectedType.courseCode}. Please ensure Course exists.`);
+      setError(`No Course found matching code '${selectedType.courseCode}'. Please create a Course with this code first.`);
       return;
     }
 
@@ -199,7 +199,11 @@ const SyllabusManagement = () => {
   // ===== Submit mark entry =====
   const handleMarkEntry = async (e) => {
     e.preventDefault();
-    if (!markEntryForm.marks || !markEntryForm.grade || !markEntryForm.gpa) {
+    if (
+      markEntryForm.marks === "" ||
+      markEntryForm.grade === "" ||
+      markEntryForm.gpa === ""
+    ) {
       setError("Please fill marks, grade, and GPA");
       return;
     }
