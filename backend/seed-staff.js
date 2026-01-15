@@ -21,6 +21,15 @@ const staffData = [
         username: "bob",
         password: "password123",
         role: "staff"
+    },
+    {
+        name: "Test Staff",
+        staffId: "Staff/FAS/12",
+        department: "Faculty of Applied Science",
+        email: "teststaff@univ.edu",
+        username: "staff_verified", // Unique username required
+        password: "uov2026user",
+        role: "staff"
     }
 ];
 

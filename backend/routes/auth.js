@@ -62,8 +62,12 @@ router.post("/login", async (req, res) => {
       }
     }
 
+    // 2. Student Login (Check student collection if not found as admin)
     if (!user) {
-      user = await Student.findOne({ username });
+      // Check for username OR regNumber
+      user = await Student.findOne({
+        $or: [{ username: username }, { regNumber: username }]
+      });
       if (user) {
         role = user.role || "student";
         // Optional: Check if faculty matches?
@@ -73,7 +77,10 @@ router.post("/login", async (req, res) => {
 
     // 3. Staff Login (Check staff collection)
     if (!user) {
-      user = await Staff.findOne({ username });
+      // Check for username OR staffId
+      user = await Staff.findOne({
+        $or: [{ username: username }, { staffId: username }]
+      });
       if (user) {
         role = user.role || "staff";
       }
@@ -97,7 +104,55 @@ router.post("/login", async (req, res) => {
     });
   } catch (err) {
     console.error(err);
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error", error: err.message, stack: err.stack });
+  }
+});
+
+// Change Password Route
+router.post("/change-password", async (req, res) => {
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "fallback_secret_key_DO_NOT_USE_IN_PROD");
+    const { currentPassword, newPassword } = req.body;
+    const userId = decoded.id;
+    const role = decoded.role;
+
+    let user;
+    let Model;
+
+    if (role === "student") {
+      Model = Student;
+    } else if (role === "staff") {
+      Model = Staff;
+    } else if (role === "admin") {
+      Model = Admin;
+    } else {
+      return res.status(400).json({ message: "Unknown role" });
+    }
+
+    user = await Model.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Verify current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid current password" });
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ message: "Password changed successfully" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 });
 

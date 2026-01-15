@@ -25,6 +25,17 @@ const studentData = [
         faculty: "Business",
         department: "Business Management Department",
         email: "jane@student.univ.edu"
+    },
+    {
+        name: "Test Student",
+        regNumber: "2021/ICT/74",
+        indexNumber: "IDX003",
+        academicYear: "2021/2022",
+        username: "student_verified", // Unique username required by schema
+        password: "uov2026user",
+        faculty: "Applied Science",
+        department: "Computer Science",
+        email: "teststudent@univ.edu"
     }
 ];
 mongoose
