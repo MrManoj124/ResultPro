@@ -18,7 +18,7 @@ const TypeManagement = () => {
     level: "Level 1",
     faculty: "Business",
     department: "",
-    subDepartment: "",
+    course: "",
     prerequisites: [],
     isActive: true,
   });
@@ -78,7 +78,7 @@ const TypeManagement = () => {
           level: "Level 1",
           faculty: "Business",
           department: "",
-          subDepartment: "",
+          course: "",
           prerequisites: [],
           isActive: true,
         });
@@ -117,7 +117,7 @@ const TypeManagement = () => {
           level: "Level 1",
           faculty: "Business",
           department: "",
-          subDepartment: "",
+          course: "",
           prerequisites: [],
           isActive: true,
         });
@@ -164,7 +164,7 @@ const TypeManagement = () => {
       level: "Level 1",
       faculty: "Business",
       department: "",
-      subDepartment: "",
+      course: "",
       prerequisites: [],
       isActive: true,
     });
@@ -291,8 +291,8 @@ const TypeManagement = () => {
                 <label>Sub-Department</label>
                 <input
                   type="text"
-                  name="subDepartment"
-                  value={formData.subDepartment}
+                  name="course"
+                  value={formData.course}
                   onChange={handleInputChange}
                   placeholder="Optional: e.g., ICT"
                 />
