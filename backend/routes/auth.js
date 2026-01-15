@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 // Models
 const Student = require("../models/studentSchema");
 const Admin = require("../models/admin");
+const Staff = require("../models/staffSchema");
 
 router.post("/signup", async (req, res) => {
   try {
@@ -61,13 +62,20 @@ router.post("/login", async (req, res) => {
       }
     }
 
-    // 2. Student Login (Check student collection if not found as admin)
     if (!user) {
       user = await Student.findOne({ username });
       if (user) {
         role = user.role || "student";
         // Optional: Check if faculty matches?
         // if (faculty && user.faculty !== faculty) ...
+      }
+    }
+
+    // 3. Staff Login (Check staff collection)
+    if (!user) {
+      user = await Staff.findOne({ username });
+      if (user) {
+        role = user.role || "staff";
       }
     }
 
