@@ -31,7 +31,7 @@ const studentData = [
         regNumber: "2021/ICT/74",
         indexNumber: "IDX003",
         academicYear: "2021/2022",
-        username: "2021/ICT/74", // Unique username required by schema
+        username: "2021/ICT/74",  // Unique username required by schema
         password: "uov2026user",
         faculty: "Applied Science",
         department: "Computer Science",
