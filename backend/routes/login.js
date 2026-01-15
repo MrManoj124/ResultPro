@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Student = require("../models/student");
 
+
 // Default users
 const defaultAdmin = { username: "admin", password: "admin123" };
 const defaultStaff = { username: "staff", password: "staff123" };
