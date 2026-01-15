@@ -241,12 +241,6 @@ const TypeManagement = () => {
                 >
                   <option value="First">First</option>
                   <option value="Second">Second</option>
-                  <option value="Third">Third</option>
-                  <option value="Fourth">Fourth</option>
-                  <option value="Fifth">Fifth</option>
-                  <option value="Sixth">Sixth</option>
-                  <option value="Seventh">Seventh</option>
-                  <option value="Eighth">Eighth</option>
                 </select>
               </div>
             </div>
