@@ -616,3 +616,4 @@ const SyllabusManagement = () => {
 
 export default SyllabusManagement;
 
+
