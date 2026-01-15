@@ -288,7 +288,7 @@ const TypeManagement = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Sub-Department</label>
+                <label>Course</label>
                 <input
                   type="text"
                   name="course"
