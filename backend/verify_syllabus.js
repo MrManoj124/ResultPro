@@ -73,6 +73,7 @@ async function verifySyllabus() {
         console.error("Create Error:", err);
     }
 
+
     if (!syllabusId) {
         console.log("⚠️ Skipping Read tests because Creation failed.");
     } else {
