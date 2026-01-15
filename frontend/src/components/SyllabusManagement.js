@@ -329,7 +329,6 @@ const SyllabusManagement = () => {
                     <option value="">All Semesters</option>
                     <option value="First">First</option>
                     <option value="Second">Second</option>
-                    <option value="Third">Third</option>
                   </select>
                 </div>
                 <div className="filter-group">
