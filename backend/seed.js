@@ -12,7 +12,7 @@ async function main() {
   const faculties = [
     { name: "Faculty of Applied Science", departments: ["Department of Physical", "Department of Biological"] },
     { name: "Faculty of Business Studies", departments: ["Department of Management", "Department of Finance"] },
-    { name: "Faculty of Technological Studies", departments: ["Department of Engineering", "Department of IT"] }
+    { name: "Faculty of Technological Studies", departments: ["Department of IT"] }
   ];
 
   for (const f of faculties) {
