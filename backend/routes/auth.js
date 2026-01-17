@@ -91,8 +91,10 @@ router.post("/login", async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ message: "Invalid password" });
 
+    const userFaculty = user.faculty || (role === "admin" ? "Global" : "Pending");
+
     const token = jwt.sign(
-      { id: user._id, username: user.username, role: role, faculty: user.faculty || "Global" },
+      { id: user._id, username: user.username, role: role, faculty: userFaculty },
       process.env.JWT_SECRET || "fallback_secret_key_DO_NOT_USE_IN_PROD",
       { expiresIn: "1h" }
     );
@@ -100,11 +102,11 @@ router.post("/login", async (req, res) => {
     res.status(200).json({
       message: "Login successful",
       token,
-      user: { _id: user._id, username: user.username, role: role },
+      user: { _id: user._id, username: user.username, role: role, faculty: userFaculty },
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message, stack: err.stack });
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 });
 

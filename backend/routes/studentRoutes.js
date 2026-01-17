@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
 const Student = require("../models/studentSchema");
-const argon2 = require("argon2");
-const DEFAULT_PASSWORD = "student123"; // default password for new students
+const bcrypt = require("bcryptjs");
+const DEFAULT_PASSWORD = "uov2026user"; // Updated default password
 
 // ===== Helper: send email credentials =====
 const sendCredentialsEmail = async (studentEmail, studentName, registrationNumber) => {
@@ -66,7 +66,7 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ success: false, message: "Student already exists." });
     }
 
-    const hashedPassword = await argon2.hash(DEFAULT_PASSWORD);
+    const hashedPassword = await bcrypt.hash(DEFAULT_PASSWORD, 10);
 
     const newStudent = new Student({
       name,
@@ -107,7 +107,7 @@ router.post("/bulk", async (req, res) => {
     const studentsWithPassword = await Promise.all(
       students.map(async (s) => ({
         ...s,
-        password: await argon2.hash(DEFAULT_PASSWORD),
+        password: await bcrypt.hash(DEFAULT_PASSWORD, 10),
       }))
     );
 
