@@ -38,61 +38,6 @@ const sendCredentialsEmail = async (studentEmail, studentName, registrationNumbe
   }
 };
 
-// ===== Register/Add single student =====
-router.post("/register", async (req, res) => {
-  try {
-    const {
-      name,
-      regNumber,
-      indexNumber,
-      address,
-      birthdate,
-      gender,
-      mobile,
-      email,
-      faculty,
-      department,
-      level,
-    } = req.body;
-
-    // Check required fields
-    if (!name || !regNumber || !indexNumber || !faculty || !department || !level) {
-      return res.status(400).json({ success: false, message: "Missing required fields." });
-    }
-
-    // Check if student exists
-    const existing = await Student.findOne({ regNumber });
-    if (existing) {
-      return res.status(400).json({ success: false, message: "Student already exists." });
-    }
-
-    const hashedPassword = await bcrypt.hash(DEFAULT_PASSWORD, 10);
-
-    const newStudent = new Student({
-      name,
-      regNumber,
-      indexNumber,
-      address,
-      birthdate,
-      gender,
-      mobile,
-      email,
-      faculty,
-      department,
-      level,
-      password: hashedPassword,
-    });
-
-    await newStudent.save();
-
-    if (email) await sendCredentialsEmail(email, name, regNumber);
-
-    res.json({ success: true, student: newStudent });
-  } catch (error) {
-    console.error("Error adding student:", error);
-    res.status(500).json({ success: false, message: "Server error." });
-  }
-});
 
 // ===== Bulk upload students =====
 router.post("/bulk", async (req, res) => {
