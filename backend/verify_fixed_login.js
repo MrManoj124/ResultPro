@@ -1,14 +1,24 @@
-const axios = require("axios");
+// Verification script for login fixes
 
 const BASE_URL = "http://localhost:5000/api/auth";
 
 const testLogin = async (username, password, role) => {
     try {
-        const response = await axios.post(`${BASE_URL}/login`, { username, password });
-        console.log(`✅ ${role} Login Successful:`, response.data.user.username, "Role:", response.data.user.role, "Faculty:", response.data.user.faculty);
-        return true;
+        const response = await fetch(`${BASE_URL}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+            console.log(`✅ ${role} Login Successful:`, data.user.username, "Role:", data.user.role, "Faculty:", data.user.faculty);
+            return true;
+        } else {
+            console.error(`❌ ${role} Login Failed:`, data.message);
+            return false;
+        }
     } catch (error) {
-        console.error(`❌ ${role} Login Failed:`, error.response ? error.response.data.message : error.message);
+        console.error(`❌ ${role} Login Error:`, error.message);
         return false;
     }
 };
