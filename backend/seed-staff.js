@@ -8,26 +8,29 @@ const staffData = [
         name: "Dr. Alice Smith",
         staffId: "STF001",
         department: "Information and Communication Technology",
+        faculty: "Applied Science",
         email: "alice@univ.edu",
-        username: "alice",
-        password: "password123",
+        username: "Staff/fas/01",
+        password: "uov2026user",
         role: "staff"
     },
     {
         name: "Prof. Bob Jones",
         staffId: "STF002",
         department: "Business Management Department",
+        faculty: "Business Studies",
         email: "bob@univ.edu",
-        username: "bob",
-        password: "password123",
+        username: "Staff/fas/02",
+        password: "uov2026user",
         role: "staff"
     },
     {
         name: "Test Staff",
         staffId: "Staff/FAS/12",
         department: "Faculty of Applied Science",
+        faculty: "Applied Science",
         email: "teststaff@univ.edu",
-        username: "Staff/fas/12", // Unique username required
+        username: "Staff/fas/12",
         password: "uov2026user",
         role: "staff"
     }

@@ -6,23 +6,23 @@ require("dotenv").config();
 const studentData = [
     {
         name: "John Doe",
-        regNumber: "REG2023001",
+        regNumber: "2021/ICT/01",
         indexNumber: "IDX001",
-        academicYear: "2023/2024",
-        username: "john",
-        password: "password123",
+        academicYear: "2021/2022",
+        username: "2021/ICT/01",
+        password: "uov2026user",
         faculty: "Applied Science",
-        department: "Physical Science Department",
+        department: "Information and Communication Technology",
         email: "john@student.univ.edu"
     },
     {
         name: "Jane Smith",
-        regNumber: "REG2023002",
+        regNumber: "2023/BMS/01",
         indexNumber: "IDX002",
         academicYear: "2023/2024",
-        username: "jane",
-        password: "password123",
-        faculty: "Business",
+        username: "2023/BMS/01",
+        password: "uov2026user",
+        faculty: "Business Studies",
         department: "Business Management Department",
         email: "jane@student.univ.edu"
     },
@@ -31,10 +31,10 @@ const studentData = [
         regNumber: "2021/ICT/74",
         indexNumber: "IDX003",
         academicYear: "2021/2022",
-        username: "2021/ICT/74",  // Unique username required by schema
+        username: "2021/ICT/74",
         password: "uov2026user",
         faculty: "Applied Science",
-        department: "Computer Science",
+        department: "Information and Communication Technology",
         email: "teststudent@univ.edu"
     }
 ];
