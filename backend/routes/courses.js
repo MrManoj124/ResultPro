@@ -1,7 +1,7 @@
 // routes/courses.js
 const express = require("express");
 const router = express.Router();
-const Course = require("../models/courseSchema");
+const Course = require("../models/Course");
 
 // 📌 Add single course — POST /api/courses
 router.post("/", async (req, res) => {
