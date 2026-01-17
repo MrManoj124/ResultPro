@@ -7,7 +7,6 @@ const { body, validationResult } = require("express-validator");
 router.get("/", async (req, res) => {
   try {
     const { faculty, department, semester, level } = req.query;
-
     // Build filter object
     let filter = { isActive: true };
     if (faculty) filter.faculty = faculty;
