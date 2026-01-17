@@ -9,7 +9,7 @@ const Student = require("../models/studentSchema");
 const Admin = require("../models/admin");
 const Staff = require("../models/staffSchema");
 
-router.post("/signup", async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const {
       regNumber,
@@ -40,7 +40,7 @@ router.post("/signup", async (req, res) => {
     });
 
     await newStudent.save();
-    res.status(201).json({ message: "Signup successful" });
+    res.status(201).json({ message: "Login successful" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
