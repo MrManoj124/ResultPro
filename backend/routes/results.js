@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 require("dotenv").config();
 
-const faculties = ["science", "arts", "engineering"];
+const faculties = ["Applied Science", "Business Studies", "Technology"];
 const connections = {};
 faculties.forEach(f => {
   connections[f] = mongoose.createConnection(`${process.env.MONGO_URI}faculty_${f}`, {
