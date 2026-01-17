@@ -117,7 +117,7 @@ router.post(
         level,
         faculty,
         department,
-        subDepartment,
+        course,
         description,
         prerequisites: prerequisites || [],
       });
