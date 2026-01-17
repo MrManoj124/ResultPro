@@ -92,7 +92,6 @@ router.post("/login", async (req, res) => {
     if (!match) return res.status(400).json({ message: "Invalid password" });
 
     const userFaculty = user.faculty || (role === "admin" ? "Global" : "Pending");
-
     const token = jwt.sign(
       { id: user._id, username: user.username, role: role, faculty: userFaculty },
       process.env.JWT_SECRET || "fallback_secret_key_DO_NOT_USE_IN_PROD",
