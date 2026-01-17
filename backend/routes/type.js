@@ -145,7 +145,7 @@ router.put(
   [
     body("courseName").optional().trim(),
     body("courseUnit").optional().isNumeric(),
-    body("semester").optional().isIn(["First", "Second", "Third"]),
+    body("semester").optional().isIn(["First", "Second"]),
   ],
   async (req, res) => {
     const errors = validationResult(req);
