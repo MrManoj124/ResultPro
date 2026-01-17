@@ -9,43 +9,6 @@ const Student = require("../models/studentSchema");
 const Admin = require("../models/admin");
 const Staff = require("../models/staffSchema");
 
-router.post("/login", async (req, res) => {
-  try {
-    const {
-      regNumber,
-      fullName, // Mapping to 'name'
-      enrollDate, // Mapping to 'enrollmentDate'
-      indexNumber,
-      academicYear,
-      faculty,
-      username,
-      password,
-    } = req.body;
-
-    // Check existing
-    const existingUser = await Student.findOne({ username });
-    if (existingUser) return res.status(400).json({ message: "Username already exists" });
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newStudent = new Student({
-      regNumber,
-      name: fullName,
-      enrollmentDate: enrollDate,
-      indexNumber,
-      academicYear,
-      faculty,
-      username,
-      password: hashedPassword,
-    });
-
-    await newStudent.save();
-    res.status(201).json({ message: "Login successful" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
-  }
-});
 
 router.post("/login", async (req, res) => {
   try {
