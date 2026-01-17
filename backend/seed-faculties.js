@@ -9,18 +9,18 @@ const seedData = [
     departments: [
       {
         departmentName: "Banking Insurance Department",
-        subDepartments: [],
+        courses: [],
         description: "Banking and Insurance studies",
       },
       {
         departmentName: "Business Management Department",
-        subDepartments: [],
+        courses: [],
         description: "Business Management and Administration",
         courseCount: 5,
       },
       {
         departmentName: "Project Management Department",
-        subDepartments: [],
+        courses: [],
         description: "Project Management and Planning",
       },
     ],
@@ -30,7 +30,7 @@ const seedData = [
     departments: [
       {
         departmentName: "Technology Department",
-        subDepartments: [],
+        courses: [],
         description: "Technology and Engineering",
       },
     ],
@@ -40,9 +40,9 @@ const seedData = [
     departments: [
       {
         departmentName: "Bio-Science Department",
-        subDepartments: [
+        courses: [
           {
-            subDepartmentName: "Biology",
+            courses: "Biology",
             description: "Biological Sciences",
           },
         ],
@@ -50,13 +50,13 @@ const seedData = [
       },
       {
         departmentName: "Physical Science Department",
-        subDepartments: [
+        courses: [
           {
-            subDepartmentName: "Information and Communication Technology",
+            courses: "Information and Communication Technology",
             description: "ICT and Computer Science",
           },
           {
-            subDepartmentName: "Applied Mathematical and Computer Science",
+            courses: "Applied Mathematical and Computer Science",
             description: "Mathematics and Computer Science",
           },
         ],
